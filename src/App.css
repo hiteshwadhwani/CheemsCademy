@@ -8,7 +8,56 @@ body {
   padding: 0;
   margin: 0;
   font-family: avenir-roman, sans-serif;
+  background: rgb(57,51,57);
+  background: linear-gradient(124deg, rgba(57,51,57,1) 0%, rgba(0,1,8,1) 52%);
+  color: #f9f9f9;
+  background-repeat: no-repeat;
+  background-size: fill;
+  height: 100vh;
+  display: inline-block;
 }
+#head1{
+  margin-top: 50px;
+  margin-left: 50px;
+  text-shadow: gray 1px 1px 10px;
+  font-family: 'Times New Roman', Times, serif, Helvetica, sans-serif;
+  font-size: 35px;
+  border: white 1px solid;
+  display: inline-block;
+  padding: 20px;
+  border-radius: 4px;
+}
+#p1{
+  padding: 20px;
+  border: solid 1px white;
+  margin: 50px;
+  border-radius: 4px;
+  display: inline-block;
+  transition: 1s ease-in-out;
+}
+
+#p2{
+  visibility: hidden;
+  padding: 20px;
+  margin: 50px;
+  border-radius: 4px;
+  display: inline-block;
+}
+
+#p1:hover{
+  border: none;
+  margin-bottom: 0;
+  transition: 1s ease-in-out;
+}
+
+#p1:hover + #p2 {
+  visibility: visible;
+  border: solid 1px white;
+  transition: 1s ease-in-out;
+}
+
+
+
 a {
   color: #f9f9f9;
   text-decoration: none;
