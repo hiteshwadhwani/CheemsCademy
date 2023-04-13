@@ -15,24 +15,26 @@ import styled from "styled-components";
 import { auth } from "../firebase";
 import { useSignInWithGoogle, useAuthState} from "react-firebase-hooks/auth";
 import { setUserLoginDetails } from "../features/user/userSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import LoginWithEmail from './loginWithEmail'
+import { getUserUID } from "../features/user/userSlice";
+import { setDoc, doc } from "firebase/firestore";
+import {db} from '../firebase'
 
 const Login = (props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [signInWithGoogle, user1, loading1, error1] = useSignInWithGoogle(auth);
-  const [user, loading, error] = useAuthState(auth);
+  const [signInWithGoogle, user, loading, error] = useSignInWithGoogle(auth);
+  const userUID = useSelector(getUserUID)
   
   useEffect(() => {
-    if (user) {
-      setUser(user);
-      navigate("/home");
+    if (userUID) {
+      navigate("/dashboard");
     }
-  }, [user]);
+  }, [userUID]);
 
-  if(error1){
+  if(error){
     console.log(error)
   }
 
@@ -40,21 +42,35 @@ const Login = (props) => {
     signInWithGoogle()
   }
 
+  if(user){
+    const isNewUser = user.user.metadata.creationTime === user.user.metadata.lastSignInTime;
+    if(isNewUser){
+      setDoc(doc(db, "user", user.user.uid), {
+        displayName: user.user.displayName,
+        photoURL: user.user.photoURL,
+        email: user.user.email,
+        uid: user.user.uid,
+        phoneNumber: user.user.phoneNumber,
+      })
+    }
+    
+  }
+
 
 
   const setUser = (user) => {
-    const name = user.displayName;
-    const photo = user.photoURL;
+    const displayName = user.displayName;
+    const photoURL = user.photoURL;
     const email = user.email;
     const uid = user.uid;
-    const phone = user.phoneNumber;
+    const phoneNumber = user.phoneNumber;
     dispatch(
       setUserLoginDetails({
         uid,
-        name,
+        displayName,
         email,
-        phone,
-        photo,
+        phoneNumber,
+        photoURL,
       })
     );
   };

@@ -10,6 +10,9 @@ import {useDispatch} from 'react-redux'
 import {setUserLoginDetails, setSignOutState} from '../features/user/userSlice'
 import { useNavigate } from 'react-router-dom';
 import { useSignOut } from 'react-firebase-hooks/auth';
+import { useDocument } from 'react-firebase-hooks/firestore';
+import {doc, getDoc } from 'firebase/firestore'
+import {db} from '../firebase'
 
 
 const Header = (props) => {
@@ -18,18 +21,21 @@ const Header = (props) => {
   const [user, loading1, error1] = useAuthState(auth);
   const [signOut, loading2, error2] = useSignOut(auth);
   useEffect(() => {
-    // if(user){
-    //   setUser(user)
-    //   navigate("/home")
-    // }
-    // else{
-    //   navigate('/')
-    // }
-
     if(user){
-      setUser(user)
+      getUserData(user)
+    }
+    else{
+      navigate("/")
     }
   }, [user])
+
+  const getUserData = async (user) => {
+    const login_user = await getDoc(doc(db, "user", user.uid))
+    if(login_user.exists()){
+      console.log(login_user.data())
+      setUser(login_user.data())
+    }
+  }
 
   const handleLogOut = async () => {
     const success = await signOut()
@@ -39,18 +45,18 @@ const Header = (props) => {
   }
 
   const setUser = (user) => {
-    const name = user.displayName;
-    const photo = user.photoURL;
+    const displayName = user.displayName;
+    const photoURL = user.photoURL;
     const email = user.email;
     const uid = user.uid;
-    const phone = user.phoneNumber;
+    const phoneNumber = user.phoneNumber;
     dispatch(
       setUserLoginDetails({
         uid,
-        name,
+        displayName,
         email,
-        phone,
-        photo,
+        phoneNumber,
+        photoURL,
       })
     );
   };
@@ -79,7 +85,7 @@ const Header = (props) => {
             </CustomBox>
             </Link>
             {user && (<CustomBox>MyHome</CustomBox>)}
-            <CustomBox>Catalog</CustomBox>
+            <Link to='/catalog'><CustomBox>Catalog</CustomBox></Link>
             <CustomBox>Resources</CustomBox>
             <CustomBox>Community</CustomBox>
             <CustomBox>Pricing</CustomBox>

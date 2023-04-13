@@ -1,12 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { act } from 'react-dom/test-utils';
 
 const initialState = {
     uid: '',
-    name: '',
+    displayName: '',
     email: '',
-    number:'',
-    photo: ''
+    phoneNumber:'',
+    photoURL: ''
 }
 
 const userSlice = createSlice({
@@ -15,24 +14,24 @@ const userSlice = createSlice({
     reducers:{
         setUserLoginDetails: (state, action) => {
             state.uid = action.payload.uid;
-            state.name = action.payload.name;
+            state.displayName = action.payload.displayName;
             state.email = action.payload.email;
-            state.phone = action.payload.phone
-            state.photo = action.payload.photo;
+            state.phoneNumber = action.payload.phoneNumber
+            state.photoURL = action.payload.photoURL;
         },
         setSignOutState: (state) => {
             state.uid = null;
-            state.name = null;
+            state.displayName = null;
             state.email = null;
-            state.number = null;
-            state.photo = null;
+            state.phoneNumber = null;
+            state.photoURL = null;
         }
     }
 })
 export const {setUserLoginDetails, setSignOutState} = userSlice.actions
 
 export const getUser = (state) => state.user
-export const getUserName = (state) => state.user.name
+export const getUserName = (state) => state.user.displayName
 export const getUserUID = (state) => state.user.uid
 
 

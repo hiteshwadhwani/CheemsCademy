@@ -16,30 +16,35 @@ import { useState } from "react";
 import styled from "styled-components";
 import { FaGoogle } from "react-icons/fa";
 import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
-import {auth} from '../../firebase'
+import { auth, db } from "../../firebase";
+import { setDoc, doc } from "firebase/firestore";
 import { useDispatch } from "react-redux";
-import {setError} from '../../features/error/errorSlice'
+import { setError } from "../../features/error/errorSlice";
 
 const JoinUs = (props) => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [createUserWithEmailAndPassword, user, loading, error] =
     useCreateUserWithEmailAndPassword(auth);
 
-  
-  const handleLogin = () => {
-    console.log(typeof(email))
-    createUserWithEmailAndPassword(email, password)
-    if(error){
-      dispatch(setError({
-        title:error.name,
-        description:error.message
-      }))
-    }
-    if(user){
-      console.log(user)
-    }
+  if (user) {
+    setDoc(doc(db, "user", user.user.uid), {
+      displayName: user.user.displayName,
+      photoURL: user.user.photoURL,
+      email: user.user.email,
+      uid: user.user.uid,
+      phoneNumber: user.user.phoneNumber,
+    });
+  }
+
+  if (error) {
+    dispatch(
+      setError({
+        title: error.name,
+        description: error.message,
+      })
+    );
   }
 
   const isEmailNull = email === "";
@@ -54,10 +59,8 @@ const JoinUs = (props) => {
         margin="auto"
       >
         <Box width="35%">
-          <Flex justifyContent='center' alignItems='center'>
-            
-              <Image width='100%' height='100%' src='/images/dogesh.jpeg' />
-            
+          <Flex justifyContent="center" alignItems="center">
+            <Image width="100%" height="100%" src="/images/dogesh.jpeg" />
           </Flex>
         </Box>
         <Flex width="35%" flexDirection="column" textAlign="left">
@@ -93,7 +96,7 @@ const JoinUs = (props) => {
               bgColor="rgb(58,16,229)"
               color="rgb(255,255,255)"
               _hover={{ bgColor: "rgb(81,49,243)" }}
-              onClick={() => handleLogin()}
+              onClick={() => createUserWithEmailAndPassword(email, password)}
             >
               Sign Up
             </Button>

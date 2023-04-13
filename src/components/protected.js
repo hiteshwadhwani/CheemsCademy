@@ -1,17 +1,15 @@
-import {useSelector} from 'react-redux'
-import {getUserUID} from '../features/user/userSlice'
-import { Navigate } from 'react-router-dom'
+import { useSelector } from "react-redux";
+import { getUserUID } from "../features/user/userSlice";
+import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
+const Protected = ({ children }) => {
+  const userUID = useSelector(getUserUID);
+  const navigate = useNavigate();
 
-
-
-
-
-const Protected = ({children}) => {
-    const userUID = useSelector(getUserUID)
-    if(!userUID){
-        return <Navigate to="/" replace />
-    }
-    return children
-}
-export default Protected
+  if(userUID === '' || userUID === null){
+    return <Navigate to="/" replace={true} />
+  }
+  return children
+};
+export default Protected;

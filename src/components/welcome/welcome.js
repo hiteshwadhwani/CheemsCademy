@@ -11,7 +11,7 @@ const Welcome = (props) => {
     const navigate = useNavigate()
     useEffect(()=> {
         if(userUID){
-            navigate("/home")
+            navigate("/dashboard")
         } 
     }, [userUID])
         return (

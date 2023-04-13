@@ -8,6 +8,8 @@ import Foot from "./components/foot"
 import Protected from "./components/protected";
 import Home from "./components/home";
 import Error from "./components/alert/error";
+import Dashboard from "./components/dashboard/Dashboard";
+import Catalog from "./components/catalog/Catalog"
 
 function App() {
   return (
@@ -19,7 +21,9 @@ function App() {
           <Routes>
             <Route exact path="/" element={<Welcome />} />
             <Route exact path="/login" element={<Login />} />
+            <Route exact path="/catalog" element={<Catalog />} />
             <Route exact path="/home" element={<Protected><Home /></Protected>} />
+            <Route exact path="/dashboard" element={<Protected><Dashboard /></Protected>} />
           </Routes>
         </BrowserRouter>
         <Foot />

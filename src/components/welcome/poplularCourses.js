@@ -1,5 +1,6 @@
 import {useMediaQuery, Box, Container, Grid, Heading, Button } from "@chakra-ui/react"
 import Boxes from "./Boxes"
+import { Link } from "react-router-dom";
 
 
 const PopularCourses = (props) => {
@@ -16,7 +17,7 @@ const PopularCourses = (props) => {
                 <Boxes />
                 <Boxes />
             </Grid>
-            <Button display='block' margin='auto' bgColor='rgb(255,211,0)' borderRadius='0' _hover={{opacity:0.8}}>Explore Full Catalog</Button>
+            <Link to='/catalog'><Button display='block' margin='auto' bgColor='rgb(255,211,0)' borderRadius='0' _hover={{opacity:0.8}}>Explore Full Catalog</Button></Link>
         </Box>
     )
 }

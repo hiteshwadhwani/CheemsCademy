@@ -24,18 +24,18 @@ const LoginWithEmail = () => {
 
   const setUser = (user) => {
     console.log(user)
-    const name = user.displayName;
-    const photo = user.photoURL;
+    const displayName = user.displayName;
+    const photoURL = user.photoURL;
     const email = user.email;
     const uid = user.uid;
-    const phone = user.phoneNumber;
+    const phoneNumber = user.phoneNumber;
     dispatch(
       setUserLoginDetails({
         uid,
-        name,
+        displayName,
         email,
-        phone,
-        photo,
+        phoneNumber,
+        photoURL,
       })
     );
   };
