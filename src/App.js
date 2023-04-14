@@ -14,20 +14,25 @@ import Catalog from "./components/catalog/Catalog"
 function App() {
   return (
     <div className="App">
-      <Box bgColor="rgb(255,240,229)">
+      {/* <Box > */}
         <BrowserRouter>
           <Header />
           <Error />
+          <Box paddingTop='50px' bgColor="rgb(255,240,229)">
           <Routes>
+            
             <Route exact path="/" element={<Welcome />} />
             <Route exact path="/login" element={<Login />} />
             <Route exact path="/catalog" element={<Catalog />} />
             <Route exact path="/home" element={<Protected><Home /></Protected>} />
             <Route exact path="/dashboard" element={<Protected><Dashboard /></Protected>} />
+           
           </Routes>
+          <Foot />
+          </Box>
         </BrowserRouter>
-        <Foot />
-      </Box>
+        
+      {/* </Box> */}
     </div>
   );
 }

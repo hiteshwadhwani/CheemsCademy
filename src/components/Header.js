@@ -13,11 +13,13 @@ import { useSignOut } from 'react-firebase-hooks/auth';
 import { useDocument } from 'react-firebase-hooks/firestore';
 import {doc, getDoc } from 'firebase/firestore'
 import {db} from '../firebase'
+import {useState} from 'react'
 
 
 const Header = (props) => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const [scrollPosition, setScrollPosition] = useState(0);
   const [user, loading1, error1] = useAuthState(auth);
   const [signOut, loading2, error2] = useSignOut(auth);
   useEffect(() => {
@@ -28,6 +30,19 @@ const Header = (props) => {
       navigate("/")
     }
   }, [user])
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const position = window.pageYOffset;
+      setScrollPosition(position);
+    };
+  
+    window.addEventListener("scroll", handleScroll, { passive: true });
+  
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   const getUserData = async (user) => {
     const login_user = await getDoc(doc(db, "user", user.uid))
@@ -63,7 +78,7 @@ const Header = (props) => {
   
   return (
     <>
-      <Box borderBottom="1px solid black">
+      <Box position='fixed' top='0' left='0' right='0' bgColor={scrollPosition > 500 ? 'white' : 'rgb(255,240,229)'} zIndex='1' transition='all 1s linear'>
         <Flex
           w="60%"
           flexDirection="row"

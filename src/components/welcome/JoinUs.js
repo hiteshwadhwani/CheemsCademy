@@ -11,6 +11,7 @@ import {
   IconButton,
   Icon,
   Image,
+  Heading,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import styled from "styled-components";
@@ -64,9 +65,9 @@ const JoinUs = (props) => {
           </Flex>
         </Box>
         <Flex width="35%" flexDirection="column" textAlign="left">
-          <CustomText>
+          <Heading as='h5' size={{ base: 'sm', md: 'md', lg: 'xl' }} letterSpacing='1.2' marginBottom='25px' fontWeight='600'>
             Join the millions learning to code with Codecademy for free
-          </CustomText>
+          </Heading>
           <form action="/" method="POST">
             <FormControl marginBottom="15px" isInvalid={isEmailNull}>
               <FormLabel>Email</FormLabel>
