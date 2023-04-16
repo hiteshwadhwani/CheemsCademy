@@ -34,9 +34,11 @@ const Login = (props) => {
     }
   }, [userUID]);
 
-  if(error){
-    console.log(error)
-  }
+  useEffect(() => {
+    if(error){
+      console.log(error)
+    }
+  }, [error])
 
   const handleGoogleAuth = () => {
     signInWithGoogle()
@@ -97,6 +99,8 @@ const Login = (props) => {
                 border="1px solid black"
                 boxSize={9}
                 cursor="pointer"
+                backgroundColor='rgb(254,255,254)'
+                _hover={{backgroundColor:'rgb(241,240,242)'}}
               >
                 <svg width="100%" height="100%">
                   <title>Google</title>

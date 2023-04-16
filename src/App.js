@@ -10,6 +10,7 @@ import Home from "./components/home";
 import Error from "./components/alert/error";
 import Dashboard from "./components/dashboard/Dashboard";
 import Catalog from "./components/catalog/Catalog"
+import Course from "./components/course/Course";
 
 function App() {
   return (
@@ -17,13 +18,15 @@ function App() {
       {/* <Box > */}
         <BrowserRouter>
           <Header />
-          <Error />
+          
           <Box paddingTop='50px' bgColor="rgb(255,240,229)">
+          <Error />
           <Routes>
             
             <Route exact path="/" element={<Welcome />} />
             <Route exact path="/login" element={<Login />} />
             <Route exact path="/catalog" element={<Catalog />} />
+            <Route exact path='/course/:id' element={<Course />} />
             <Route exact path="/home" element={<Protected><Home /></Protected>} />
             <Route exact path="/dashboard" element={<Protected><Dashboard /></Protected>} />
            

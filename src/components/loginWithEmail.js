@@ -7,13 +7,11 @@ import {
   Button,
 } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
-import { FaGoogle } from "react-icons/fa";
-import styled from "styled-components";
 import { auth } from "../firebase";
 import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { setUserLoginDetails } from "../features/user/userSlice";
 import { useSelector, useDispatch } from "react-redux";
-import {setError} from '../features/error/errorSlice'
+import { setError } from "../features/error/errorSlice";
 
 const LoginWithEmail = () => {
   const dispatch = useDispatch();
@@ -23,7 +21,7 @@ const LoginWithEmail = () => {
     useSignInWithEmailAndPassword(auth);
 
   const setUser = (user) => {
-    console.log(user)
+    console.log(user);
     const displayName = user.displayName;
     const photoURL = user.photoURL;
     const email = user.email;
@@ -43,12 +41,19 @@ const LoginWithEmail = () => {
   // if (user) {
   //   setUser(user);
   // }
-  if (error) {
-    dispatch(setError({
-      title:error.name,
-      description:error.message
-    }))
-  }
+
+  useEffect(() => {
+    if (error) {
+      dispatch(
+        setError({
+          title: error.name,
+          description: error.message,
+        })
+      );
+    }
+
+    // console.log(error)
+  }, [error]);
 
   return (
     <>

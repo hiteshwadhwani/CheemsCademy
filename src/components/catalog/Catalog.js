@@ -1,75 +1,88 @@
 import {
   Box,
-  Container,
+
   Grid,
   Heading,
   List,
   ListItem,
 } from "@chakra-ui/react";
-import PopularSubjects from "./PopularSubjects";
-import TopCarrerPaths from "./TopCarrerPaths";
-import PopularCourses from "./PopularCourses";
 import Boxes from "../welcome/Boxes";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import {
-  doc,
-  getDoc,
   collection,
   getDocs,
-  collectionGroup,
   where,
   query,
 } from "firebase/firestore";
 import { db } from "../../firebase";
+import {useDispatch, useSelector} from 'react-redux'
+import {setCourses, getCourses} from '../../features/courses/coursesSlice'
+import { useEffect } from "react";
+
+const ShowBoxes = ({type, courses}) => {
+  if(type === 'all'){
+    return (
+      <>
+      {courses.map((course, idx) => (
+        <Boxes key={idx} />
+      ))}
+      </>
+    )
+  }
+  else{
+    return (
+      <>
+      {courses.filter((course) => course.type.toLowerCase() === type.toLowerCase()).map((course, idx) => (
+        <Boxes key={idx} />
+      ))}
+      </>
+    )
+  }
+}
+
 
 const Catalog = (props) => {
+  const dispatch = useDispatch()
   const [showCourses, setShowCourses] = useState("all");
-  const [courses, setCourses] = useState()
   const [loading, setLoading] = useState(true)
-  console.log(showCourses);
+  // const [coursesToShow, setCourses] = useState(null)
+  const courses = useSelector(getCourses)
 
-  const getCourses = async (type) => {
-    let collection_ref = null;
-    if(type === 'all'){
-      collection_ref = collection(db, "courses");
-    }
-    else{
-      collection_ref = query(collection(db, "courses"), where("type", "==", type));
-    }
-    
+  // console.log(courses)
+
+  const fetchCourses = async () => {
+    let collection_ref = collection(db, "courses");
+    let courses = [];
     try {
-      const courses = [];
-
       const ret = await getDocs(collection_ref);
-
       ret.forEach(async (response) => {
-        let course = {};
-        course["course"] = response.data();
-        const module_arr = [];
-        const modules = await getDocs(
-          collection(db, "courses", response.id, "modules")
-        );
-        modules.forEach((module) => {
-          module_arr.push(module.data());
-        });
-        course["module"] = module_arr;
-        courses.push(course);
+        // const module_arr = [];
+        // const modules = await getDocs(
+        //   collection(db, "courses", response.id, "modules")
+        // );
+        // modules.forEach((module) => {
+        //   module_arr.push(module.data());
+        // });
+        
+        //pushing in final courses
+        courses.push(response.data())
       });
-      setCourses(courses)
     } catch (err) {
       console.log("something went wrong in getting courses", err);
     }
     finally{
+      dispatch(setCourses({
+        course:courses
+      }))
       setLoading(false)
     }
   };
 
-  useState(() => {
-    getCourses(showCourses)
-  }, [showCourses]);
-
-  console.log(courses)
+  useEffect(() => {
+    fetchCourses()
+    console.log("again")
+  }, []);
 
   return (
     <>
@@ -117,10 +130,11 @@ const Catalog = (props) => {
                 : `Explore ${showCourses}`}
             </Heading>
             <Grid templateColumns="repeat(3, 1fr)" gap={5}>
-              <Link to="/course/:id">
+              {/* <Link to="/course/:id">
                 <Boxes />
               </Link>
-              <Boxes />
+              <Boxes /> */}
+              {!loading && (<ShowBoxes type={showCourses} courses={courses} />)}
             </Grid>
           </Box>
         </Grid>

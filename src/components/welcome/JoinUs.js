@@ -21,6 +21,7 @@ import { auth, db } from "../../firebase";
 import { setDoc, doc } from "firebase/firestore";
 import { useDispatch } from "react-redux";
 import { setError } from "../../features/error/errorSlice";
+import { useEffect } from "react";
 
 const JoinUs = (props) => {
   const dispatch = useDispatch();
@@ -39,14 +40,16 @@ const JoinUs = (props) => {
     });
   }
 
-  if (error) {
-    dispatch(
-      setError({
-        title: error.name,
-        description: error.message,
-      })
-    );
-  }
+  useEffect(() => {
+    if (error) {
+      dispatch(
+        setError({
+          title: error.name,
+          description: error.message,
+        })
+      );
+    }
+  }, [error]);
 
   const isEmailNull = email === "";
   const isPasswordNull = password === "";
@@ -65,7 +68,13 @@ const JoinUs = (props) => {
           </Flex>
         </Box>
         <Flex width="35%" flexDirection="column" textAlign="left">
-          <Heading as='h5' size={{ base: 'sm', md: 'md', lg: 'xl' }} letterSpacing='1.2' marginBottom='25px' fontWeight='600'>
+          <Heading
+            as="h5"
+            size={{ base: "sm", md: "md", lg: "xl" }}
+            letterSpacing="1.2"
+            marginBottom="25px"
+            fontWeight="600"
+          >
             Join the millions learning to code with Codecademy for free
           </Heading>
           <form action="/" method="POST">

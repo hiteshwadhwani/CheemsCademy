@@ -26,9 +26,6 @@ const Header = (props) => {
     if(user){
       getUserData(user)
     }
-    else{
-      navigate("/")
-    }
   }, [user])
 
   useEffect(() => {
@@ -78,7 +75,7 @@ const Header = (props) => {
   
   return (
     <>
-      <Box position='fixed' top='0' left='0' right='0' bgColor={scrollPosition > 500 ? 'white' : 'rgb(255,240,229)'} zIndex='1' transition='all 1s linear'>
+      <Box position='fixed' top='0' left='0' right='0' bgColor={scrollPosition > 100 ? 'white' : 'rgb(255,240,229)'} zIndex='1' transition='all 1s linear'>
         <Flex
           w="60%"
           flexDirection="row"
