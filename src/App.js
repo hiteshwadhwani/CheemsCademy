@@ -11,6 +11,7 @@ import Error from "./components/alert/error";
 import Dashboard from "./components/dashboard/Dashboard";
 import Catalog from "./components/catalog/Catalog"
 import Course from "./components/course/Course";
+import CreateCourse from "./components/admin/createCourse";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
             <Route exact path='/course/:id' element={<Course />} />
             <Route exact path="/home" element={<Protected><Home /></Protected>} />
             <Route exact path="/dashboard" element={<Protected><Dashboard /></Protected>} />
+            <Route exact path="/create-course" element={<CreateCourse />} />
            
           </Routes>
           <Foot />
