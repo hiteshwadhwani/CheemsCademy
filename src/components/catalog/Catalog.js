@@ -24,8 +24,12 @@ const ShowBoxes = ({type, courses}) => {
   if(type === 'all'){
     return (
       <>
-      {courses.map((course, idx) => (
-        <Boxes key={idx} />
+      {courses.map((course) => (
+        <>
+        <Link to={'/course/' + course.id}>
+        <Boxes key={course.id} />
+        </Link>
+        </>
       ))}
       </>
     )
@@ -34,7 +38,11 @@ const ShowBoxes = ({type, courses}) => {
     return (
       <>
       {courses.filter((course) => course.type.toLowerCase() === type.toLowerCase()).map((course, idx) => (
+        <>
+        <Link to={'/course/' + course.id}>
         <Boxes key={idx} />
+        </Link>
+        </>
       ))}
       </>
     )
@@ -66,7 +74,9 @@ const Catalog = (props) => {
         // });
         
         //pushing in final courses
-        courses.push(response.data())
+        const data  = {...response.data()}
+        data['id'] = response.id 
+        courses.push(data)
       });
     } catch (err) {
       console.log("something went wrong in getting courses", err);

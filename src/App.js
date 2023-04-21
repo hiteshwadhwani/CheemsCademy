@@ -20,7 +20,7 @@ function App() {
         <BrowserRouter>
           <Header />
           
-          <Box paddingTop='80px' bgColor="rgb(255,240,229)">
+          <Box paddingTop='65px' bgColor="rgb(255,240,229)">
           <Error />
           <Routes>
             

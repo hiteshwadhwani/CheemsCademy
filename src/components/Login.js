@@ -57,28 +57,7 @@ const Login = (props) => {
     }
     
   }
-
-
-
-  const setUser = (user) => {
-    const displayName = user.displayName;
-    const photoURL = user.photoURL;
-    const email = user.email;
-    const uid = user.uid;
-    const phoneNumber = user.phoneNumber;
-    dispatch(
-      setUserLoginDetails({
-        uid,
-        displayName,
-        email,
-        phoneNumber,
-        photoURL,
-      })
-    );
-  };
-
   
-
   return (
     <>
       <Box borderBottom="1px solid black">

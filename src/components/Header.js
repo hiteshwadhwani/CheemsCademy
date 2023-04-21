@@ -62,6 +62,7 @@ const Header = (props) => {
     const email = user.email;
     const uid = user.uid;
     const phoneNumber = user.phoneNumber;
+    const EnrolledCourses = user.courses
     dispatch(
       setUserLoginDetails({
         uid,
@@ -69,6 +70,7 @@ const Header = (props) => {
         email,
         phoneNumber,
         photoURL,
+        EnrolledCourses
       })
     );
   };
@@ -96,7 +98,7 @@ const Header = (props) => {
               <Image src='/images/logo1.png' width='100%' height='100%' />
             </CustomBox>
             </Link>
-            {user && (<CustomBox>MyHome</CustomBox>)}
+            {user && (<Link to='/dashboard'><CustomBox>MyHome</CustomBox></Link>)}
             <Link to='/catalog'><CustomBox>Catalog</CustomBox></Link>
             <CustomBox>Resources</CustomBox>
             <CustomBox>Community</CustomBox>
