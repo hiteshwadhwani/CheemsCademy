@@ -21,7 +21,6 @@ const Error = (props) => {
     }
   }, [error])
   if(error.show){
-    
     // return (
     //   <Alert status="error">
     //     <AlertIcon />
