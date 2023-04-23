@@ -10,10 +10,9 @@ import {
   Text,
   Flex,
 } from "@chakra-ui/react";
-import { transform } from "framer-motion";
 import styled from "styled-components";
 
-const Boxes = (props) => {
+const Boxes = ({name, short_description, experience}) => {
   return (
     // <Card height='20rem' borderRadius='0' _hover={{transform: 'translate3d(2px, -2px, 2px)'}} transition='transform 0.2s ease'>
     <CustomCard>
@@ -21,14 +20,14 @@ const Boxes = (props) => {
         <source src="/videos/Doge dancing.mp4" type="video/mp4" />
       </video>
       <CardHeader backgroundColor="rgb(234,253,198)">
-        <Heading size="xs">Client Report</Heading>
+        <Heading size="xs">Course</Heading>
       </CardHeader>
       <CardBody>
         <Heading as="h5" size="md">
-          Learn JavaScript: Fundamentals
+          {name}
         </Heading>
         <Text pt="2" fontSize="sm">
-          Learn how to use JavaScript to power dynamic behaviors on websites.
+          {short_description}
         </Text>
       </CardBody>
       <Divider />
@@ -37,7 +36,7 @@ const Boxes = (props) => {
         alignItems="center"
         justifyContent="space-between"
       >
-        <Box>Beginner Friendly</Box>
+        <Box>{experience}</Box>
         <Box>3 lessons</Box>
       </CardFooter>
     </CustomCard>

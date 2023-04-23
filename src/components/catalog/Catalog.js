@@ -27,7 +27,7 @@ const ShowBoxes = ({type, courses}) => {
       {courses.map((course) => (
         <>
         <Link to={'/course/' + course.id}>
-        <Boxes key={course.id} />
+        <Boxes key={course.id} name={course.name} short_description={course.short_description} experience={course.experience} />
         </Link>
         </>
       ))}
@@ -40,7 +40,7 @@ const ShowBoxes = ({type, courses}) => {
       {courses.filter((course) => course.type.toLowerCase() === type.toLowerCase()).map((course, idx) => (
         <>
         <Link to={'/course/' + course.id}>
-        <Boxes key={idx} />
+        <Boxes key={idx} name={course.name} short_description={course.short_description} experience={course.experience} />
         </Link>
         </>
       ))}

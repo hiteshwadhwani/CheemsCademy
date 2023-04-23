@@ -53,6 +53,7 @@ const Login = (props) => {
         email: user.user.email,
         uid: user.user.uid,
         phoneNumber: user.user.phoneNumber,
+        courses: []
       })
     }
     

@@ -12,6 +12,7 @@ import Dashboard from "./components/dashboard/Dashboard";
 import Catalog from "./components/catalog/Catalog"
 import Course from "./components/course/Course";
 import CreateCourse from "./components/admin/createCourse";
+import Player from './components/dashboard/player'
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           
           <Box paddingTop='65px' bgColor="rgb(255,240,229)">
           <Error />
+          {/* <Player /> */}
           <Routes>
             
             <Route exact path="/" element={<Welcome />} />

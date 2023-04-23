@@ -11,6 +11,10 @@ import {
   AccordionIcon,
   AccordionPanel,
   Skeleton,
+  UnorderedList,
+  ListItem,
+  List,
+  ListIcon,
 } from "@chakra-ui/react";
 
 // import CourseBox from "./CourseBox";
@@ -18,30 +22,29 @@ import Recommended from "./Recommended";
 import { useSelector } from "react-redux";
 import { getUser } from "../../features/user/userSlice";
 import { useEffect, useState } from "react";
-import { getDoc } from "firebase/firestore";
+import { collection, getDoc, getDocs } from "firebase/firestore";
+import { db } from "../../firebase";
+import { MdPending } from "react-icons/md";
+
+
 
 const CourseBox = ({ user }) => {
   const [enrolledCourses, setEnrolledCourses] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  // const getEnrolledCourses = async () => {
-  //   const courses = [];
-  //   user.EnrolledCourses.map(async (courseRef) => {
-  //     const course = await getDoc(courseRef);
-  //     if (course.exists()) {
-  //       courses.push({ id: course.id, ...course.data() });
-  //     }
-  //   });
-  //   setEnrolledCourses(courses);
-  //   setLoading(false);
-  // };
   useEffect(() => {
     const fetchCourses = async () => {
       try {
         const courses = [];
         for (const reference of user.EnrolledCourses) {
           const course = await getDoc(reference);
-          courses.push({ id: course.id, ...course.data() });
+          const module = await getDocs(
+            collection(db, "courses", course.id, "modules")
+          );
+          const moduleArr = [];
+          module.forEach((doc) => {
+            moduleArr.push({ id: doc.id, ...doc.data() });
+          });
+          courses.push({ id: course.id, ...course.data(), modules: moduleArr });
         }
         setEnrolledCourses(courses);
       } catch (error) {
@@ -56,7 +59,8 @@ const CourseBox = ({ user }) => {
   if (loading) {
     return <Box>loading</Box>;
   }
-  if (loading === false) console.log(enrolledCourses);
+  if (loading === false) console.log(enrolledCourses)
+  
 
   return (
     <Box padding="5px" marginY="2rem">
@@ -83,10 +87,43 @@ const CourseBox = ({ user }) => {
             </h2>
             <AccordionPanel pb={4}>
               {course.description}
+              {course.modules.map((module) => (
+                <ModuleBox key={module.id} module={module} />
+              ))}
             </AccordionPanel>
           </AccordionItem>
         ))}
       </Accordion>
+    </Box>
+  );
+};
+
+const ModuleBox = ({ module }) => {
+  return (
+    <Box margin="1rem" padding="1rem" border="1px solid #E9E9E9">
+      <Heading as="h6" size="sm" fontWeight="600">
+        {module.name}
+      </Heading>
+      <Box>
+        <List marginY="1rem" spacing={3}>
+          <ListItem _hover={{ bgColor: "grey" }}>
+            <ListIcon as={MdPending} color="red.500" />
+            Intro to javascript
+          </ListItem>
+          <ListItem _hover={{ bgColor: "grey" }}>
+            <ListIcon as={MdPending} color="red.500" />
+            Intro to javascript
+          </ListItem>
+          <ListItem _hover={{ bgColor: "grey" }}>
+            <ListIcon as={MdPending} color="red.500" />
+            Intro to javascript
+          </ListItem>
+          <ListItem _hover={{ bgColor: "grey" }}>
+            <ListIcon as={MdPending} color="red.500" />
+            Intro to javascript
+          </ListItem>
+        </List>
+      </Box>
     </Box>
   );
 };
