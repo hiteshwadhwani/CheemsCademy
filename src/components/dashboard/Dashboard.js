@@ -19,14 +19,13 @@ import {
 
 // import CourseBox from "./CourseBox";
 import Recommended from "./Recommended";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getUser } from "../../features/user/userSlice";
 import { useEffect, useState } from "react";
 import { collection, getDoc, getDocs } from "firebase/firestore";
 import { db } from "../../firebase";
 import { MdPending } from "react-icons/md";
-
-
+import {playVideo} from "../../features/player/playerSlice"
 
 const CourseBox = ({ user }) => {
   const [enrolledCourses, setEnrolledCourses] = useState([]);
@@ -59,8 +58,6 @@ const CourseBox = ({ user }) => {
   if (loading) {
     return <Box>loading</Box>;
   }
-  if (loading === false) console.log(enrolledCourses)
-  
 
   return (
     <Box padding="5px" marginY="2rem">
@@ -99,30 +96,28 @@ const CourseBox = ({ user }) => {
 };
 
 const ModuleBox = ({ module }) => {
+  const dispatch = useDispatch()
+  const handlePlayVideo = (url) => {
+    dispatch(playVideo({
+      url
+    }))
+  }
   return (
     <Box margin="1rem" padding="1rem" border="1px solid #E9E9E9">
       <Heading as="h6" size="sm" fontWeight="600">
         {module.name}
       </Heading>
       <Box>
-        <List marginY="1rem" spacing={3}>
-          <ListItem _hover={{ bgColor: "grey" }}>
-            <ListIcon as={MdPending} color="red.500" />
-            Intro to javascript
-          </ListItem>
-          <ListItem _hover={{ bgColor: "grey" }}>
-            <ListIcon as={MdPending} color="red.500" />
-            Intro to javascript
-          </ListItem>
-          <ListItem _hover={{ bgColor: "grey" }}>
-            <ListIcon as={MdPending} color="red.500" />
-            Intro to javascript
-          </ListItem>
-          <ListItem _hover={{ bgColor: "grey" }}>
-            <ListIcon as={MdPending} color="red.500" />
-            Intro to javascript
-          </ListItem>
-        </List>
+        {module.lectures && (
+          <List marginY="1rem" spacing={2}>
+            {module.lectures.map((video) => (
+              <ListItem padding='4px' onClick={() => handlePlayVideo(video)} _hover={{ bgColor: "#EDEDED", cursor:'pointer' }}>
+                <ListIcon  as={MdPending} color="red.500" />
+                Intro to javascript
+              </ListItem>
+            ))}
+          </List>
+        )}
       </Box>
     </Box>
   );

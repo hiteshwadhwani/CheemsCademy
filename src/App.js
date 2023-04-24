@@ -23,7 +23,7 @@ function App() {
           
           <Box paddingTop='65px' bgColor="rgb(255,240,229)">
           <Error />
-          {/* <Player /> */}
+          <Player />
           <Routes>
             
             <Route exact path="/" element={<Welcome />} />
