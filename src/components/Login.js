@@ -21,7 +21,8 @@ import LoginWithEmail from './loginWithEmail'
 import { getUserUID } from "../features/user/userSlice";
 import { setDoc, doc } from "firebase/firestore";
 import {db} from '../firebase'
-
+import {toast} from 'react-hot-toast'
+import SignInWithGoogle from "./SignInWithGoogle"
 const Login = (props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -36,7 +37,7 @@ const Login = (props) => {
 
   useEffect(() => {
     if(error){
-      console.log(error)
+      toast.error(error.message)
     }
   }, [error])
 
@@ -71,7 +72,7 @@ const Login = (props) => {
             
             <Text mb="10px">Or log in using:</Text>
             <Flex>
-              <CustomBox
+              {/* <CustomBox
                 onClick={() => handleGoogleAuth()}
                 position="relative"
                 width="100px"
@@ -104,7 +105,8 @@ const Login = (props) => {
                     <path d="M0 0h18v18H0V0z"></path>
                   </g>
                 </svg>
-              </CustomBox>
+              </CustomBox> */}
+              <SignInWithGoogle />
             </Flex>
           </Flex>
         </Container>

@@ -12,6 +12,7 @@ import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { setUserLoginDetails } from "../features/user/userSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { setError } from "../features/error/errorSlice";
+import {toast} from 'react-hot-toast'
 
 const LoginWithEmail = () => {
   const dispatch = useDispatch();
@@ -37,22 +38,10 @@ const LoginWithEmail = () => {
       })
     );
   };
-
-  // if (user) {
-  //   setUser(user);
-  // }
-
   useEffect(() => {
     if (error) {
-      dispatch(
-        setError({
-          title: error.name,
-          description: error.message,
-        })
-      );
+      toast.error(error.message)
     }
-
-    // console.log(error)
   }, [error]);
 
   return (

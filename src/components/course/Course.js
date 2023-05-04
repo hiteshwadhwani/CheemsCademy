@@ -25,17 +25,17 @@ import {
   arrayUnion,
 } from "firebase/firestore";
 import { db, storage } from "../../firebase";
-import { useState } from "react";
-import { getUserUID, updateCourses } from "../../features/user/userSlice";
+import { useState, useCallback } from "react";
+import { getUserUID, updateCourses, getUser } from "../../features/user/userSlice";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
-import OverViewBox from "./OverViewBox"
+import OverViewBox from "./OverViewBox";
 
-import {ref, getDownloadURL} from 'firebase/storage'
-
-
+import { ref, getDownloadURL } from "firebase/storage";
+import { toast } from "react-hot-toast";
+import useRazorpay from "react-razorpay";
 
 const SyllabusBox = ({ courseModule, loadingModules }) => {
   return (
@@ -93,11 +93,11 @@ const Modules = ({ courseModule, loadingModules }) => {
   );
 };
 
-
-
 const Course = (props) => {
+  const Razorpay = useRazorpay();
   const dispatch = useDispatch();
   const userUID = useSelector(getUserUID);
+  const user = useSelector(getUser)
   const { id } = useParams();
   const [courses, setCourse] = useState();
   const [courseModule, setCourseModules] = useState([]);
@@ -150,6 +150,23 @@ const Course = (props) => {
       navigate("/login");
     } else {
       try {
+        handlePayment();
+      } catch (error) {
+        toast.error(error);
+      } finally {
+        console.log("done");
+      }
+    }
+  };
+
+  const handlePayment = async (params) => {
+    const options = {
+      key: process.env.REACT_APP_YOUR_RAZORPAY_API_KEY, // Enter the Key ID generated from the Dashboard
+      amount: "50000", // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+      currency: "INR",
+      name: user.displayName,
+      description: courses.name,
+      handler: async function (response) {
         const courseRef = doc(db, "courses", id);
         const userRef = doc(db, "user", userUID);
         await updateDoc(userRef, {
@@ -160,17 +177,21 @@ const Course = (props) => {
             newCourse: courseRef,
           })
         );
-        navigate("/dashboard")
-        
-      } catch (error) {
-        console.log("something went wrong in appying", error);
-      } finally {
-        console.log("done");
-      }
-    }
+        navigate("/dashboard");
+      },
+      theme: {
+        color: "#3399cc",
+      },
+    };
+
+    const rzp1 = new Razorpay(options);
+
+    rzp1.on("payment.failed", function (response) {
+      toast.error(response.error.description);
+    });
+
+    rzp1.open();
   };
-
-
 
   return (
     <>

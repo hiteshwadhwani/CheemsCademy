@@ -16,12 +16,16 @@ import {
 import { useState } from "react";
 import styled from "styled-components";
 import { FaGoogle } from "react-icons/fa";
-import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
+import {
+  useCreateUserWithEmailAndPassword,
+  useSignInWithGoogle,
+} from "react-firebase-hooks/auth";
 import { auth, db } from "../../firebase";
 import { setDoc, doc } from "firebase/firestore";
 import { useDispatch } from "react-redux";
 import { setError } from "../../features/error/errorSlice";
 import { useEffect } from "react";
+import SignInWithGoogle from "../SignInWithGoogle"
 
 const JoinUs = (props) => {
   const dispatch = useDispatch();
@@ -30,6 +34,7 @@ const JoinUs = (props) => {
   const [createUserWithEmailAndPassword, user, loading, error] =
     useCreateUserWithEmailAndPassword(auth);
 
+
   if (user) {
     setDoc(doc(db, "user", user.user.uid), {
       displayName: user.user.displayName,
@@ -37,7 +42,7 @@ const JoinUs = (props) => {
       email: user.user.email,
       uid: user.user.uid,
       phoneNumber: user.user.phoneNumber,
-      courses:[]
+      courses: [],
     });
   }
 
@@ -65,7 +70,11 @@ const JoinUs = (props) => {
       >
         <Box width="35%">
           <Flex justifyContent="center" alignItems="center">
-            <Image width="100%" height="100%" src="/images/dogesh.jpeg" />
+            <Image
+              width="100%"
+              height="100%"
+              src="https://www.codecademy.com/webpack/73cf4baedce567ebc4ec4b42d0df1927.jpg"
+            />
           </Flex>
         </Box>
         <Flex width="35%" flexDirection="column" textAlign="left">
@@ -119,13 +128,7 @@ const JoinUs = (props) => {
           <Box as="span" fontWeight={"bold"} mb="15px">
             Or sign up using:
           </Box>
-          <Icon
-            cursor="pointer"
-            as={FaGoogle}
-            boxSize={10}
-            border="2px solid black"
-            p="4px"
-          />
+          <SignInWithGoogle />
         </Flex>
       </Flex>
     </Box>
