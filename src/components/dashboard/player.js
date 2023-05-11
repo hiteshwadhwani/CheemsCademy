@@ -26,7 +26,7 @@ const Player = () => {
             playing={isPlaying}
             onEnded={() => setIsPlaying(!isPlaying)}
             height="50%"
-            url="https://firebasestorage.googleapis.com/v0/b/codecademy-16c7b.appspot.com/o/lectures%2FDoge%20dancing.mp4?alt=media&token=3eb21f9d-6bc3-44d8-b8d8-a3e454bebfca"
+            url={player.url}
           />
           {isPlaying ? (
             <Button onClick={() => setIsPlaying(!isPlaying)}>pause</Button>

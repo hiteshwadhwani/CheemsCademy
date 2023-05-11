@@ -28,4 +28,6 @@ import { getStorage, ref } from "firebase/storage";
   const db = getFirestore(app);
   const storage = getStorage();
 
+  console.log({app})
+
   export {app, auth, db, storage}
