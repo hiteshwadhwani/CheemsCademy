@@ -48,5 +48,4 @@ const CourseBox = ({ enrolledCourses, loading }) => {
     </Skeleton>
   );
 };
-
 export default CourseBox;
